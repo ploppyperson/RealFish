@@ -1,0 +1,4 @@
+name: BetterFish
+version: ${project.version}
+main: uk.antiperson.betterfish.BetterFish
+api-version: 1.16
