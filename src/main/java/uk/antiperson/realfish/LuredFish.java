@@ -53,7 +53,7 @@ public class LuredFish {
         fishLoc.setDirection(movementVector);
         getFish().teleport(fishLoc);
         getFish().setVelocity(movementVector);
-        if (fishLoc.distance(hookLoc) > 0.2) {
+        if (fishLoc.distance(hookLoc) > 0.3) {
             return;
         }
         getBobber().getOwner().setFishingState(Fisherman.FishingState.HOOKED);
