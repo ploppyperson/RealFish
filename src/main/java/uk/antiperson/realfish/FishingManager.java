@@ -1,4 +1,4 @@
-package uk.antiperson.betterfish;
+package uk.antiperson.realfish;
 
 import org.bukkit.entity.Player;
 
@@ -8,10 +8,10 @@ import java.util.Set;
 public class FishingManager {
 
     private final Set<Fisherman> fishermen;
-    private final BetterFish betterFish;
+    private final RealFish realFish;
 
-    public FishingManager(BetterFish betterFish) {
-        this.betterFish = betterFish;
+    public FishingManager(RealFish realFish) {
+        this.realFish = realFish;
         this.fishermen = new HashSet<>();
     }
 

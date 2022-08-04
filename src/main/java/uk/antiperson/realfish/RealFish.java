@@ -1,4 +1,4 @@
-package uk.antiperson.betterfish;
+package uk.antiperson.realfish;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -6,7 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
-public final class BetterFish extends JavaPlugin implements CommandExecutor {
+public final class RealFish extends JavaPlugin implements CommandExecutor {
 
     private FishingManager fishingManager;
 
@@ -16,7 +16,7 @@ public final class BetterFish extends JavaPlugin implements CommandExecutor {
         // Plugin startup logic
         getServer().getPluginManager().registerEvents(new Listeners(this), this);
         new FishingTask(this).runTaskTimer(this,1,1);
-        getCommand("betterfish").setExecutor(this);
+        getCommand("realfish").setExecutor(this);
     }
 
     @Override
@@ -30,8 +30,8 @@ public final class BetterFish extends JavaPlugin implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        sender.sendMessage("BetterFish v" + getDescription().getVersion());
-        sender.sendMessage("GitHub: https://github.com/Nathat23/BetterFish");
+        sender.sendMessage("RealFish v" + getDescription().getVersion());
+        sender.sendMessage("GitHub: https://github.com/Nathat23/RealFish");
         sender.sendMessage("Discord: https://discord.gg/GadyA9j");
         return false;
     }

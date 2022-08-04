@@ -1,8 +1,7 @@
-package uk.antiperson.betterfish;
+package uk.antiperson.realfish;
 
 import org.bukkit.entity.FishHook;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 public class Fisherman {
 

@@ -1,4 +1,4 @@
-package uk.antiperson.betterfish;
+package uk.antiperson.realfish;
 
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;

@@ -1,7 +1,7 @@
-name: BetterFish
+name: RealFish
 version: ${project.version}
-main: uk.antiperson.betterfish.BetterFish
+main: uk.antiperson.realfish.RealFish
 api-version: 1.16
 commands:
-  betterfish:
-    aliases: [bf]
+  realfish:
+    aliases: [rf]

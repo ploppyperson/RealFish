@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>uk.antiperson</groupId>
-    <artifactId>BetterFish</artifactId>
+    <artifactId>RealFish</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>BetterFish</name>
+    <name>RealFish</name>
 
     <properties>
         <java.version>1.8</java.version>

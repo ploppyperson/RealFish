@@ -1,4 +1,4 @@
-package uk.antiperson.betterfish;
+package uk.antiperson.realfish;
 
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
@@ -14,18 +14,18 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Listeners implements Listener {
 
-    private final BetterFish betterFish;
+    private final RealFish realFish;
 
-    public Listeners(BetterFish betterFish) {
-        this.betterFish = betterFish;
+    public Listeners(RealFish realFish) {
+        this.realFish = realFish;
     }
 
     @EventHandler
     public void onFish(PlayerFishEvent event) {
-        Fisherman fisherman = betterFish.getFishingManager().getFisherman(event.getPlayer());
+        Fisherman fisherman = realFish.getFishingManager().getFisherman(event.getPlayer());
         if (fisherman == null) {
             fisherman = new Fisherman(event.getPlayer(), event.getHook());
-            betterFish.getFishingManager().addFisherman(fisherman);
+            realFish.getFishingManager().addFisherman(fisherman);
         }
         if (fisherman.getFishBobber() == null) {
             fisherman.setFishBobber(new FishBobber(fisherman, event.getHook()));
@@ -60,7 +60,7 @@ public class Listeners implements Listener {
         if (is == null || is.getType() != Material.FISHING_ROD) {
             return;
         }
-        Fisherman fisherman = betterFish.getFishingManager().getFisherman(event.getPlayer());
+        Fisherman fisherman = realFish.getFishingManager().getFisherman(event.getPlayer());
         if (fisherman == null) {
             return;
         }
@@ -73,7 +73,7 @@ public class Listeners implements Listener {
             return;
         }
         Player player = (Player) event.getEntity().getShooter();
-        Fisherman fisherman = betterFish.getFishingManager().getFisherman(player);
+        Fisherman fisherman = realFish.getFishingManager().getFisherman(player);
         if (fisherman == null) {
             return;
         }
@@ -82,10 +82,10 @@ public class Listeners implements Listener {
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
-        Fisherman fisherman = betterFish.getFishingManager().getFisherman(event.getPlayer());
+        Fisherman fisherman = realFish.getFishingManager().getFisherman(event.getPlayer());
         if (fisherman == null) {
             return;
         }
-        betterFish.getFishingManager().removeFisherman(fisherman);
+        realFish.getFishingManager().removeFisherman(fisherman);
     }
 }
