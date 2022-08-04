@@ -28,7 +28,7 @@ public class Fisherman {
 
     public void setFishingState(FishingState fishingState) {
         this.fishingState = fishingState;
-        System.out.println(getFishingState() + "," + getFishBobber().getWait());
+        //System.out.println(getFishingState() + "," + getFishBobber().getWait());
     }
 
     public void setFishBobber(FishBobber fishBobber) {
