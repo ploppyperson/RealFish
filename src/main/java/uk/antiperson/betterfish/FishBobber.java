@@ -27,11 +27,9 @@ public class FishBobber {
     }
 
     private int calculateWait() {
-        int randTicks = ThreadLocalRandom.current().nextInt(10, 60);
-        ItemStack itemStack = owner.getPlayer().getActiveItem();
-        if (itemStack == null) {
-            throw new UnsupportedOperationException("Calculating wait while fisherman isn't actually fishing!");
-        }
+        int randTicks = ThreadLocalRandom.current().nextInt(100, 600);
+        // getItemInUse no work?
+        ItemStack itemStack = owner.getPlayer().getInventory().getItemInMainHand();
         int lureLevel = itemStack.getEnchantmentLevel(Enchantment.LURE);
         return randTicks - (lureLevel * 100);
     }
@@ -71,6 +69,9 @@ public class FishBobber {
     }
 
     public void tick() {
+        if (getOwner().getFishingState() == Fisherman.FishingState.MISSED) {
+            return;
+        }
         if (getOwner().getFishingState() == Fisherman.FishingState.INITIAL) {
             int calculatedWait = calculateWait();
             if (calculatedWait <= 0) {
@@ -111,9 +112,9 @@ public class FishBobber {
             if (bobbingWait == 0) {
                 bobbingWait = ThreadLocalRandom.current().nextInt(10,15);
             }
-            bobbingTotal = Math.max(bobbingTotal - bobbingWait, 0);
-            if (bobbingTotal == 0) {
-                getOwner().setFishingState(Fisherman.FishingState.INITIAL);
+            bobbingTotal -= bobbingWait;
+            if (bobbingTotal <= 0) {
+                getOwner().setFishingState(Fisherman.FishingState.MISSED);
                 getLured().getFish().removePassenger(getHook());
                 return;
             }
@@ -125,7 +126,7 @@ public class FishBobber {
     }
 
     private LuredFish findNearbyFish() {
-        for (Entity entity : getHook().getLocation().getNearbyEntities(4,10,4)) {
+        for (Entity entity : getHook().getNearbyEntities(4,10,4)) {
             if (entity instanceof Fish) {
                 return new LuredFish(this, (Fish) entity, 0.05);
             }

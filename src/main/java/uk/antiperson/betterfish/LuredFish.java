@@ -1,8 +1,14 @@
 package uk.antiperson.betterfish;
 
 import org.bukkit.Location;
+import org.bukkit.Tag;
 import org.bukkit.entity.Fish;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.loot.LootContext;
 import org.bukkit.util.Vector;
+
+import java.util.Collection;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class LuredFish {
 
@@ -43,13 +49,24 @@ public class LuredFish {
             Vector fish = fishLoc.toVector();
             Vector hook = hookLoc.toVector();
             movementVector = fish.clone().multiply(-1).add(hook).multiply(speed);
-            fishLoc.setDirection(movementVector);
-            getFish().teleport(fishLoc);
         }
+        fishLoc.setDirection(movementVector);
+        getFish().teleport(fishLoc);
         getFish().setVelocity(movementVector);
         if (fishLoc.distance(hookLoc) > 0.2) {
             return;
         }
         getBobber().getOwner().setFishingState(Fisherman.FishingState.HOOKED);
+    }
+
+    public ItemStack getItem() {
+        LootContext lootContext = new LootContext.Builder(getFish().getLocation()).lootedEntity(getFish()).build();
+        Collection<ItemStack> itemStackList = getFish().getLootTable().populateLoot(ThreadLocalRandom.current(), lootContext);
+        for (ItemStack itemStack : itemStackList) {
+            if (Tag.ITEMS_FISHES.isTagged(itemStack.getType())) {
+                return itemStack;
+            }
+        }
+        return null;
     }
 }

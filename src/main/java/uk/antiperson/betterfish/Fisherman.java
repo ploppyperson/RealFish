@@ -54,9 +54,6 @@ public class Fisherman {
         if (getFishingState() != Fisherman.FishingState.REELING) {
             return;
         }
-        ItemStack fish = new ItemStack(Utilities.getFishItem(getFishBobber().getLured().getFish()));
-        getPlayer().getInventory().addItem(fish);
-        getFishBobber().getLured().getFish().remove();
         cancel();
     }
 
@@ -66,6 +63,7 @@ public class Fisherman {
         LURING,
         HOOKED,
         REELING,
+        MISSED,
         NONE
     }
 }

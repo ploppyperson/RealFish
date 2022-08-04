@@ -1,13 +1,16 @@
 package uk.antiperson.betterfish;
 
 import org.bukkit.Material;
-import org.bukkit.entity.FishHook;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Listeners implements Listener {
 
@@ -40,8 +43,10 @@ public class Listeners implements Listener {
                 break;
             case REEL_IN:
                 if (fisherman.getFishingState() == Fisherman.FishingState.HOOKED) {
-                    ItemStack itemStack = new ItemStack(Utilities.getFishItem(fisherman.getFishBobber().getLured().getFish()));
+                    ItemStack itemStack = new ItemStack(fisherman.getFishBobber().getLured().getItem());
                     event.getPlayer().getWorld().dropItemNaturally(event.getPlayer().getLocation(), itemStack);
+                    ExperienceOrb experienceOrb = (ExperienceOrb) event.getPlayer().getWorld().spawnEntity(event.getPlayer().getLocation(), EntityType.EXPERIENCE_ORB);
+                    experienceOrb.setExperience(ThreadLocalRandom.current().nextInt(1, 6));
                     fisherman.setFishingState(Fisherman.FishingState.NONE);
                 }
                 fisherman.cancel();
