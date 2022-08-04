@@ -9,6 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -47,6 +48,11 @@ public class Listeners implements Listener {
                     event.getPlayer().getWorld().dropItemNaturally(event.getPlayer().getLocation(), itemStack);
                     ExperienceOrb experienceOrb = (ExperienceOrb) event.getPlayer().getWorld().spawnEntity(event.getPlayer().getLocation(), EntityType.EXPERIENCE_ORB);
                     experienceOrb.setExperience(ThreadLocalRandom.current().nextInt(1, 6));
+                    ItemStack rod = fisherman.getRodItem();
+                    Damageable damageable = (Damageable) rod.getItemMeta();
+                    damageable.setDamage(damageable.getDamage() + 1);
+                    rod.setItemMeta(damageable);
+                    event.getPlayer().getInventory().setItem(fisherman.getSlot(), rod);
                     fisherman.setFishingState(Fisherman.FishingState.NONE);
                 }
                 fisherman.cancel();

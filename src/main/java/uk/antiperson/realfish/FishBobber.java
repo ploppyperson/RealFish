@@ -29,8 +29,7 @@ public class FishBobber {
     private int calculateWait() {
         int randTicks = ThreadLocalRandom.current().nextInt(100, 600);
         // getItemInUse no work?
-        ItemStack itemStack = owner.getPlayer().getInventory().getItemInMainHand();
-        int lureLevel = itemStack.getEnchantmentLevel(Enchantment.LURE);
+        int lureLevel = getOwner().getRodItem().getEnchantmentLevel(Enchantment.LURE);
         return randTicks - (lureLevel * 100);
     }
 

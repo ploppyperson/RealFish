@@ -1,7 +1,12 @@
 package uk.antiperson.realfish;
 
+import org.bukkit.Material;
 import org.bukkit.entity.FishHook;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.Arrays;
 
 public class Fisherman {
 
@@ -12,6 +17,22 @@ public class Fisherman {
     public Fisherman(Player player, FishHook fishHook) {
         this.player = player;
         this.fishBobber = new FishBobber(this, fishHook);
+    }
+
+    public EquipmentSlot getSlot() {
+        EquipmentSlot[] hands = new EquipmentSlot[]{EquipmentSlot.HAND, EquipmentSlot.OFF_HAND};
+        for (EquipmentSlot hand : hands) {
+            ItemStack itemStack = player.getInventory().getItem(hand);
+            if (itemStack != null && itemStack.getType() == Material.FISHING_ROD) {
+                return hand;
+            }
+        }
+        return null;
+    }
+
+    public ItemStack getRodItem() {
+        EquipmentSlot slot = getSlot();
+        return slot == null ? null : getPlayer().getInventory().getItem(slot);
     }
 
     public Player getPlayer() {
