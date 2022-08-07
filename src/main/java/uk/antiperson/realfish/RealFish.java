@@ -1,5 +1,6 @@
 package uk.antiperson.realfish;
 
+import org.bstats.bukkit.Metrics;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -17,6 +18,7 @@ public final class RealFish extends JavaPlugin implements CommandExecutor {
         getServer().getPluginManager().registerEvents(new Listeners(this), this);
         new FishingTask(this).runTaskTimer(this,1,1);
         getCommand("realfish").setExecutor(this);
+        new Metrics(this, 16057);
     }
 
     @Override
