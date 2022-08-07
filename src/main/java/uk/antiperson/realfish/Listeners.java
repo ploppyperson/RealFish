@@ -10,6 +10,7 @@ import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -51,7 +52,7 @@ public class Listeners implements Listener {
                     ItemStack rod = fisherman.getRodItem();
                     Damageable damageable = (Damageable) rod.getItemMeta();
                     damageable.setDamage(damageable.getDamage() + 1);
-                    rod.setItemMeta(damageable);
+                    rod.setItemMeta((ItemMeta) damageable);
                     event.getPlayer().getInventory().setItem(fisherman.getSlot(), rod);
                     fisherman.setFishingState(Fisherman.FishingState.NONE);
                     fisherman.getFishBobber().getLured().getFish().remove();
