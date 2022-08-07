@@ -54,6 +54,7 @@ public class Listeners implements Listener {
                     rod.setItemMeta(damageable);
                     event.getPlayer().getInventory().setItem(fisherman.getSlot(), rod);
                     fisherman.setFishingState(Fisherman.FishingState.NONE);
+                    fisherman.getFishBobber().getLured().getFish().remove();
                 }
                 fisherman.cancel();
                 break;
