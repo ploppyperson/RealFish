@@ -1,5 +1,6 @@
 package uk.antiperson.realfish;
 
+import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Fish;
@@ -18,6 +19,7 @@ public class FishBobber {
     private int bobbingWait;
     private int bobbingTotal;
     private boolean bobbleDown;
+    private Block block;
 
     public FishBobber(Fisherman owner, FishHook hook) {
         this.owner = owner;
@@ -33,8 +35,15 @@ public class FishBobber {
         return randTicks - (lureLevel * 100);
     }
 
+    public Block getBlock() {
+        if (block == null) {
+            block = getHook().getLocation().getBlock();
+        }
+        return block;
+    }
+
     public int calculateDecrement() {
-        int skyLight = getHook().getLocation().getBlock().getLightFromSky();
+        int skyLight = getBlock().getLightFromSky();
         if (skyLight < 15 && ThreadLocalRandom.current().nextBoolean()) {
             return 0;
         }
