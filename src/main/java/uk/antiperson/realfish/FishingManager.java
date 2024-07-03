@@ -33,6 +33,7 @@ public class FishingManager {
     }
 
     public void removeFisherman(Fisherman fisherman) {
+        //fisherman.cancel();
         fishermen.remove(fisherman);
     }
 }
