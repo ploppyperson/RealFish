@@ -81,6 +81,9 @@ public class FishBobber {
             return;
         }
         if (getOwner().getFishingState() == Fisherman.FishingState.INITIAL) {
+            if (getHook().getState() != FishHook.HookState.BOBBING) {
+                return;
+            }
             int calculatedWait = calculateWait();
             if (calculatedWait <= 0) {
                 return;

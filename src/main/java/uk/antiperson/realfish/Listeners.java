@@ -25,6 +25,16 @@ public class Listeners implements Listener {
     @EventHandler
     public void onFish(PlayerFishEvent event) {
         Fisherman fisherman = realFish.getFishingManager().getFisherman(event.getPlayer());
+        switch (event.getState()) {
+            case IN_GROUND:
+            case CAUGHT_ENTITY:
+                realFish.getFishingManager().removeFisherman(fisherman);
+                return;
+            case BITE:
+            case CAUGHT_FISH:
+            case FAILED_ATTEMPT:
+                throw new UnsupportedOperationException("Normal fishing is still occurring!");
+        }
         if (fisherman == null) {
             fisherman = new Fisherman(event.getPlayer(), event.getHook());
             realFish.getFishingManager().addFisherman(fisherman);
@@ -33,13 +43,6 @@ public class Listeners implements Listener {
             fisherman.setFishBobber(new FishBobber(fisherman, event.getHook()));
         }
         switch (event.getState()) {
-            case IN_GROUND:
-            case CAUGHT_ENTITY:
-                return;
-            case BITE:
-            case CAUGHT_FISH:
-            case FAILED_ATTEMPT:
-                throw new UnsupportedOperationException("Normal fishing is still occurring!");
             case FISHING:
                 fisherman.setFishingState(Fisherman.FishingState.INITIAL);
                 break;
@@ -57,7 +60,7 @@ public class Listeners implements Listener {
                     fisherman.setFishingState(Fisherman.FishingState.NONE);
                     fisherman.getFishBobber().getLured().getFish().remove();
                 }
-                fisherman.cancel();
+                realFish.getFishingManager().removeFisherman(fisherman);
                 break;
         }
     }
@@ -72,7 +75,7 @@ public class Listeners implements Listener {
         if (fisherman == null) {
             return;
         }
-        fisherman.cancel();
+        realFish.getFishingManager().removeFisherman(fisherman);
     }
 
     @EventHandler
@@ -85,7 +88,7 @@ public class Listeners implements Listener {
         if (fisherman == null) {
             return;
         }
-        fisherman.cancel();
+        realFish.getFishingManager().removeFisherman(fisherman);
     }
 
     @EventHandler
