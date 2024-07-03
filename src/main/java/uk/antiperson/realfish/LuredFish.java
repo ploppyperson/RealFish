@@ -17,6 +17,7 @@ public class LuredFish {
     private final double speed;
     private Vector movementVector;
     private Vector bobbingVector;
+    private double lastDistance;
 
     public LuredFish(FishBobber bobber, Fish fish, double speed) {
         this.bobber = bobber;
@@ -53,10 +54,18 @@ public class LuredFish {
         fishLoc.setDirection(movementVector);
         getFish().teleport(fishLoc);
         getFish().setVelocity(movementVector);
-        if (fishLoc.distance(hookLoc) > 0.3) {
+        if (fishLoc.distance(hookLoc) < 0.3) {
+            getBobber().getOwner().setFishingState(Fisherman.FishingState.HOOKED);
             return;
         }
-        getBobber().getOwner().setFishingState(Fisherman.FishingState.HOOKED);
+        if (lastDistance > 0) {
+            double distance = fishLoc.distance(hookLoc);
+            if (distance > lastDistance) {
+                // we are moving away... correct vector
+                movementVector = fishLoc.toVector().multiply(-1).add(hookLoc.toVector());
+            }
+        }
+        lastDistance = fishLoc.distance(hookLoc);
     }
 
     public ItemStack getItem() {
