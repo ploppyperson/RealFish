@@ -20,12 +20,11 @@ public class FishBobber {
     private int bobbingTotal;
     private boolean bobbleDown;
     private Block block;
+    private ItemStack itemStack;
 
     public FishBobber(Fisherman owner, FishHook hook) {
         this.owner = owner;
         this.hook = hook;
-        hook.setMaxWaitTime(Integer.MAX_VALUE);
-        hook.setMinWaitTime(Integer.MAX_VALUE);
     }
 
     private int calculateWait() {
@@ -90,6 +89,8 @@ public class FishBobber {
             }
             setWait(calculatedWait);
             getOwner().setFishingState(Fisherman.FishingState.FISHING);
+            hook.setMaxWaitTime(Integer.MAX_VALUE);
+            hook.setMinWaitTime(Integer.MAX_VALUE);
             return;
         }
         if (getOwner().getFishingState() == Fisherman.FishingState.FISHING) {
@@ -145,4 +146,11 @@ public class FishBobber {
         return null;
     }
 
+    public void setItemStack(ItemStack itemStack) {
+        this.itemStack = itemStack;
+    }
+
+    public ItemStack getItemStack() {
+        return itemStack;
+    }
 }

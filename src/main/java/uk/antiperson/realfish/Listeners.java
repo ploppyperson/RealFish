@@ -1,8 +1,10 @@
 package uk.antiperson.realfish;
 
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ExperienceOrb;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,6 +13,7 @@ import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -31,9 +34,26 @@ public class Listeners implements Listener {
                 realFish.getFishingManager().removeFisherman(fisherman);
                 return;
             case BITE:
-            case CAUGHT_FISH:
             case FAILED_ATTEMPT:
-                throw new UnsupportedOperationException("Normal fishing is still occurring!");
+                if (fisherman.getFishingState() != Fisherman.FishingState.FISHING_ITEM) {
+                    throw new UnsupportedOperationException("Normal fishing is still occurring!");
+                }
+                break;
+            case CAUGHT_FISH:
+                if (fisherman.getFishingState() != Fisherman.FishingState.FISHING_ITEM) {
+                    throw new UnsupportedOperationException("Normal fishing is still occurring!");
+                }
+                if (!(event.getCaught() instanceof Item)) {
+                    realFish.getLogger().info("Did not catch item!?");
+                    return;
+                }
+                Item item = (Item) event.getCaught();
+                Item newItem = (Item) event.getPlayer().getWorld().spawnEntity(item.getLocation(), EntityType.DROPPED_ITEM);
+                newItem.setItemStack(fisherman.getFishBobber().getItemStack());
+                item.addPassenger(newItem);
+                item.setVisibleByDefault(false);
+                item.getPersistentDataContainer().set(new NamespacedKey(realFish, "fish"), PersistentDataType.BOOLEAN, true);
+                break;
         }
         if (fisherman == null) {
             fisherman = new Fisherman(event.getPlayer(), event.getHook());
@@ -44,7 +64,7 @@ public class Listeners implements Listener {
         }
         switch (event.getState()) {
             case FISHING:
-                fisherman.setFishingState(Fisherman.FishingState.INITIAL);
+                fisherman.startFishing();
                 break;
             case REEL_IN:
                 if (fisherman.getFishingState() == Fisherman.FishingState.HOOKED) {
@@ -98,5 +118,14 @@ public class Listeners implements Listener {
             return;
         }
         realFish.getFishingManager().removeFisherman(fisherman);
+    }
+
+    @EventHandler
+    public void onPickup(PlayerAttemptPickupItemEvent event) {
+        if (!event.getItem().getPersistentDataContainer().has(new NamespacedKey(realFish, "fish"))) {
+            return;
+        }
+        event.setCancelled(true);
+        event.getItem().remove();
     }
 }
